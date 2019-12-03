@@ -1,5 +1,5 @@
-#include "../SDK/amx/amx.h"
-#include "../SDK/plugincommon.h"
+#include "../samp-plugin-sdk/amx/amx.h"
+#include "../samp-plugin-sdk/plugincommon.h"
 
 
 typedef void (*logprintf_t)(char* format, ...);
