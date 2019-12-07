@@ -1,8 +1,26 @@
-samp-plugin-sdk.so:
-	g++ -DLINUX -m32 -c samp-plugin-sdk/amxplugin.cpp
+.PHONY: test clean
 
-hello.so:
-	g++ -DLINUX -m32 -shared -c cpp/hello.cpp -o hello.so
+GCC := g++ -DLINUX -m32
+
+samp-plugin-sdk.so:
+	$(GCC) -shared samp-plugin-sdk/amxplugin.cpp -o $@
+
+hello.so: samp-plugin-sdk.so
+	$(GCC) -static -shared cpp/hello.cpp $^ -o $@
+
+plugg: hello.so
+	cp -f $^ samp/plugins/
+
+.ONESHELL:
+test: plugg
+	@cd samp
+	@rm -f server_log.txt
+	@./samp03svr &
+	@sleep 1
+	@head -n15 server_log.txt
+	@kill $$(pgrep samp)
 
 clean:
-	rm -rf **/*.o
+	rm -rf *.o
+	rm -rf *.so
+	rm -f samp/server_log.txt server_log.txt
