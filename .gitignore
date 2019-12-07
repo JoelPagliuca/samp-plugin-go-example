@@ -1,3 +1,4 @@
-samp/
+samp03/
 **/*.o
 **/*.so
+*.tar.gz
