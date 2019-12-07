@@ -2,11 +2,11 @@
 
 GCC := g++ -DLINUX -m32
 
-samp-plugin-sdk.so:
-	$(GCC) -shared samp-plugin-sdk/amxplugin.cpp -o $@
+amxplugin.o:
+	$(GCC) -c samp-plugin-sdk/amxplugin.cpp -o $@
 
-hello.so: samp-plugin-sdk.so
-	$(GCC) -static -shared cpp/hello.cpp $^ -o $@
+hello.so: amxplugin.o
+	$(GCC) -shared cpp/hello.cpp $^ -o $@
 
 plugg: hello.so
 	cp -f $^ samp/plugins/
