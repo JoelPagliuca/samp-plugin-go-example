@@ -1,13 +1,15 @@
 package main
 
+// #include "../samp-plugin-sdk/plugincommon.h"
+// #include "../samp-plugin-sdk/amx/amx.h"
 import "C"
 
 import "fmt"
 
 //export Supports
-func Supports() uint32 {
+func Supports() uint {
 	fmt.Println("Called main.go#Supports")
-	return 0
+	return C.SUPPORTS_VERSION | C.SUPPORTS_AMX_NATIVES
 }
 
 //export Load

@@ -11,3 +11,4 @@
 * if `hello.so` is statically linked
 	* `nm hello.so | grep 'U '` should be blank
 	* `ldd hello.so` should say `statically linked`
+* `import "C"` in go is very particular about where it needs to be in the file
