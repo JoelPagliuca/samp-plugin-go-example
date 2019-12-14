@@ -3,6 +3,7 @@
 
 # g++ with all my fancy options
 GCC := g++ -DLINUX -m32
+GO := CGO_ENABLED=1 GOARCH=386 go
 
 default: test
 
@@ -21,20 +22,34 @@ install: samp03/server.cfg
 amxplugin.o: install
 	$(GCC) -c samp-plugin-sdk/amxplugin.cpp -o $@ 2>/dev/null
 
-hello.so: amxplugin.o
+cpp-hello.so: amxplugin.o
 	$(GCC) -shared cpp/hello.cpp $^ -o $@ 2>/dev/null
 
-plugg: hello.so
-	cp -f $^ samp03/plugins/
+go-hello.so: go/main.go amxplugin.o
+	$(GO) build -o $@ -buildmode=c-shared $<
+
+cpp-plugin: cpp-hello.so
+	cp -f $^ samp03/plugins/hello.so
+
+go-plugin: go-hello.so
+	cp -f $^ samp03/plugins/hello.so
 
 .ONESHELL:
-test: plugg
+run-server:
 	@cd samp03
 	@rm -f server_log.txt
 	@./samp03svr &
 	@sleep 1
 	@head -n15 server_log.txt
 	@kill $$(pgrep samp)
+
+cpp-test:
+	make cpp-plugin
+	make run-server
+
+test:
+	make go-plugin
+	make run-server
 
 clean:
 	rm -rf *.o
