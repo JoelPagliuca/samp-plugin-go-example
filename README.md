@@ -7,5 +7,10 @@ sudo apt-get install gcc-multilib g++-multilib
 ```
 
 ## Running
-* Put the plugin in a folder called `plugins` in the samp directory
-* Add a `plugins hello.so` in the `server.cfg`
+Make targets:
+```
+test (default)	run the example go plugin in a samp server
+cpp-test		run the example cpp plugin
+
+clean			delete generated files
+```

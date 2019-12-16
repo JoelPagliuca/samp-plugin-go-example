@@ -25,8 +25,8 @@ amxplugin.o: install
 cpp-hello.so: amxplugin.o
 	$(GCC) -shared cpp/hello.cpp $^ -o $@ 2>/dev/null
 
-go-hello.so: go/main.go amxplugin.o
-	$(GO) build -o $@ -buildmode=c-shared $<
+go-hello.so: go/main.go
+	$(GO) build -o $@ -buildmode=c-shared $^
 
 cpp-plugin: cpp-hello.so
 	cp -f $^ samp03/plugins/hello.so
